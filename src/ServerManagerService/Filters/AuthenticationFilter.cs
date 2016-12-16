@@ -58,7 +58,7 @@ namespace ServerManagerService.Filters
 
                 (context.HttpContext.User.Identity as ClaimsIdentity)?.AddClaim(new Claim(ClaimTypes.GivenName, jwt.Subject));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 context.Result = new UnauthorizedResult();
                 return;

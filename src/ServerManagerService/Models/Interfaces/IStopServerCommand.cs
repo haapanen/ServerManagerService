@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerManagerService.Models.Interfaces
 {
-    public interface IStopServerCommand : IMessage
+    public interface IStopServerCommand
     {
         string Name { get; }
     }

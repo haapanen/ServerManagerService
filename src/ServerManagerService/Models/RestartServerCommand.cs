@@ -8,17 +8,11 @@ namespace ServerManagerService.Models
 {
     public class RestartServerCommand : IRestartServerCommand
     {
-        public RestartServerCommand(string payload, string name)
+        public RestartServerCommand(string name)
         {
-            Id = Guid.NewGuid().ToString("B");
-            Type = MessageType.Command;
-            Payload = payload;
             Name = name;
         }
 
-        public string Id { get; }
-        public MessageType Type { get; }
-        public string Payload { get; }
         public string Name { get; }
     }
 }

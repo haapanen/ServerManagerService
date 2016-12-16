@@ -5,12 +5,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
 using ServerManagerService.DbContexts;
 using ServerManagerService.Filters;
 using ServerManagerService.Models;
+using ServerManagerService.Models.Interfaces;
 
 namespace ServerManagerService.Controllers
 {
@@ -19,11 +21,13 @@ namespace ServerManagerService.Controllers
     {
         private readonly IHttpContextAccessor _httpContext;
         private readonly PermissionsContext _permissionsContext;
+        private readonly string _zmqUrl;
 
-        public ServersController(IHttpContextAccessor httpContext, PermissionsContext permissionsContext)
+        public ServersController(IHttpContextAccessor httpContext, PermissionsContext permissionsContext, IConfiguration configuration)
         {
             _httpContext = httpContext;
             _permissionsContext = permissionsContext;
+            _zmqUrl = configuration.GetSection("ZeroMQUrl").Value;
         }
 
         private string GetGivenName()
@@ -45,24 +49,23 @@ namespace ServerManagerService.Controllers
                 return Unauthorized();
             }
 
-            using (var requestSocket = new RequestSocket(">tcp://localhost:33999"))
+            using (var requestSocket = new RequestSocket(">" + _zmqUrl))
             {
-                IMessage message;
                 switch (action.Type)
                 {
                     case ActionType.Start:
-                        message = new StartServerCommand();
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStartServerCommand>(MessageType.Command, new StartServerCommand(name))));
                         break;
                     case ActionType.Stop:
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(name))));
                         break;
                     case ActionType.Restart:
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(name))));
                         break;
                     case ActionType.None:
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-
-                requestSocket.SendFrame(JsonConvert.SerializeObject(new ));
             }
 
             return Ok();

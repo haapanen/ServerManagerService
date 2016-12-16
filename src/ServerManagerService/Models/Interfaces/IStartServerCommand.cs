@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerManagerService.Models.Interfaces
 {
-    public interface IStartServerCommand : IMessage
+    public interface IStartServerCommand
     {
         string Name { get; }
     }

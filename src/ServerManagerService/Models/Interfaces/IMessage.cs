@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using ServerManagerService.Models.Interfaces;
 
 namespace ServerManagerService.Models
 {
@@ -13,10 +14,10 @@ namespace ServerManagerService.Models
         NumMessageTypes
     }
 
-    public interface IMessage
+    public interface IMessage<TPayload>
     {
         string Id { get; }
         MessageType Type { get; }
-        string Payload { get; }
+        TPayload Payload { get; }
     }
 }

@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerManagerService.Models.Interfaces
 {
-    public interface IRestartServerCommand
+    public interface IPayload
     {
-        string Name { get; }
     }
 }
