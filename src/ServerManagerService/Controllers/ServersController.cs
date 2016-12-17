@@ -47,7 +47,7 @@ namespace ServerManagerService.Controllers
             var name = GetGivenName();
             var permissions = _permissionsContext.Permissions.Where(x => x.Name == name);
 
-            if (!permissions.Any(x => x.Name == action.Target))
+            if (!permissions.Any(x => x.Target == action.Target))
             {
                 return Unauthorized();
             }
