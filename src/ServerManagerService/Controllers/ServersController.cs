@@ -57,19 +57,19 @@ namespace ServerManagerService.Controllers
                 switch (action.Type)
                 {
                     case ActionType.Start:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStartServerCommand>(MessageType.Command, new StartServerCommand(name)), new JsonSerializerSettings
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStartServerCommand>(MessageType.Command, new StartServerCommand(action.Target)), new JsonSerializerSettings
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
                         break;
                     case ActionType.Stop:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(name)), new JsonSerializerSettings
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(action.Target)), new JsonSerializerSettings
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
                         break;
                     case ActionType.Restart:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(name)), new JsonSerializerSettings
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(action.Target)), new JsonSerializerSettings
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
