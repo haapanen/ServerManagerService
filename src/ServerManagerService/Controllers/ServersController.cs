@@ -52,6 +52,7 @@ namespace ServerManagerService.Controllers
                 return Unauthorized();
             }
 
+            Console.WriteLine("Opening a request socket to " + _zmqUrl);
             using (var requestSocket = new RequestSocket(">" + _zmqUrl))
             {
                 switch (action.Type)
@@ -61,18 +62,21 @@ namespace ServerManagerService.Controllers
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
+                        return Ok(requestSocket.ReceiveFrameString());
                         break;
                     case ActionType.Stop:
                         requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(action.Target)), new JsonSerializerSettings
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
+                        return Ok(requestSocket.ReceiveFrameString());
                         break;
                     case ActionType.Restart:
                         requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(action.Target)), new JsonSerializerSettings
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         }));
+                        return Ok(requestSocket.ReceiveFrameString());
                         break;
                     case ActionType.None:
                     default:
