@@ -9,10 +9,13 @@ using Microsoft.Extensions.Configuration;
 using NetMQ;
 using NetMQ.Sockets;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ServerManagerService.DbContexts;
 using ServerManagerService.Filters;
 using ServerManagerService.Models;
-using ServerManagerService.Models.Interfaces;
+using ServiceContracts;
+using ServiceContracts.Interfaces;
+
 
 namespace ServerManagerService.Controllers
 {
@@ -54,13 +57,22 @@ namespace ServerManagerService.Controllers
                 switch (action.Type)
                 {
                     case ActionType.Start:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStartServerCommand>(MessageType.Command, new StartServerCommand(name))));
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStartServerCommand>(MessageType.Command, new StartServerCommand(name)), new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }));
                         break;
                     case ActionType.Stop:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(name))));
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IStopServerCommand>(MessageType.Command, new StopServerCommand(name)), new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }));
                         break;
                     case ActionType.Restart:
-                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(name))));
+                        requestSocket.SendFrame(JsonConvert.SerializeObject(new Message<IRestartServerCommand>(MessageType.Command, new RestartServerCommand(name)), new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        }));
                         break;
                     case ActionType.None:
                     default:

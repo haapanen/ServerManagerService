@@ -19,6 +19,7 @@
       "type": "platform"
     },
     "NetMQ": "4.0.0-rc5",
+    "ServiceContracts": "1.0.0-*",
     "Swashbuckle": "6.0.0-beta902"
   },
 

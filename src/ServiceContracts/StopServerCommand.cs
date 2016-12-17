@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ServerManagerService.Models.Interfaces;
+﻿using ServiceContracts.Interfaces;
 
-namespace ServerManagerService.Models
+namespace ServiceContracts
 {
     public class StopServerCommand : IStopServerCommand
     {
         public StopServerCommand(string name)
         {
+            Type = CommandType.StopServer;
             Name = name;
         }
 
+        public CommandType Type { get; }
         public string Name { get; }
     }
 }
